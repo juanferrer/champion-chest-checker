@@ -6,7 +6,6 @@ let regionalEndpoint = summonerName = summonerId = championName = championId = '
 
 /** List of ChampionDto */
 let championList = [];
-getChampionList();
 
 $.getJSON('regionalEndpoint.json', function (json) {
     regionalEndpoints = json;
@@ -17,38 +16,47 @@ $.getJSON('regionalEndpoint.json', function (json) {
                 .attr('value', v)
                 .text(k.toUpperCase()));
     });
-    
+
 });
 
 /**
  * Retrieve a list with details of all champions. should be called once per day
  * @return {object[]}
  */
-function getChampionList() {
-    
-    let url = `https://euw1.api.riotgames.com/lol/static-data/v3/champions?api_key=${apiKey}`;
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            championList = xmlHttp.responseText;
-    }
-    // xmlHttp.setRequestHeader("Origin", "https://developer.riotgames.com");
-    // xmlHttp.setRequestHeader("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
-    // xmlHttp.setRequestHeader("X-Riot-Token", "RGAPI-006456f5-9fc1-45d2-baa8-d61858fc6638");
-    // xmlHttp.setRequestHeader("Accept-Language", "en-GB,en;q=0.8,en-US;q=0.6,es;q=0.4,de;q=0.2");
-    // xmlHttp.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36");
-    xmlHttp.open("GET", url, true); // true for asynchronous 
-    xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "true");
-    xmlHttp.send(null);
+function populateChampionList() {
+
+    // Should change to the static data at some point
+    //let url = `https://euw1.api.riotgames.com/lol/static-data/v3/champions?api_key=${apiKey}`;
+    const url = 'http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
+    $.ajax({
+        url: url,
+        success: function (result) {
+            //return result.data;
+            championList = result.data;
+        }
+    });
+}
+
+/**
+ * Get the ID of a summoner from the name
+ * @return {string}
+ */
+function getSummonerIdFromName(name) {
+    const url = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${name}?api_key=${apiKey}`
+    $.ajax({
+        url: url,
+        success: function (result) {
+            return result.id;
+        }
+    });
 }
 
 /**
  * Get the ID of a champion from the name
- * @param {string} name Name of the champion whose ID is required
  * @return {string}
  */
 function getChampionIdFromName(name) {
-    return '';
+    return championList[name].key;
 }
 
 /**
@@ -59,4 +67,9 @@ function checkChampionChest() {
     let urlRequest = '';
 
     let hasChest = '';
+
+    populateChampionList();
+    regionalEndpoint = $('#region-selector').val();
+    summonerName = $('#summoner-name-textbox').val();
+    summonerId = getSummonerIdFromName(summonerName);
 }
