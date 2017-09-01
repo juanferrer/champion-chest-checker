@@ -10,6 +10,7 @@ const url = 'https://diabolic-straps.000webhostapp.com/api.php';
 let championList = [];
 populateChampionList();
 
+// Populate region-selector
 $.getJSON('regionalEndpoint.json', function (json) {
     regionalEndpoints = json;
     let regionSelector = $('#region-selector');
@@ -29,14 +30,10 @@ $.getJSON('regionalEndpoint.json', function (json) {
 function populateChampionList() {
 
     // Should change to the static data at some point
-    //let url = `https://euw1.api.riotgames.com/lol/static-data/v3/champions?api_key=${apiKey}`;
-    const url = 'http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
-    $.ajax({
-        url: url,
-        success: function (result) {
-            //return result.data;
-            championList = result.data;
-        }
+    const query = `https://euw1.api.riotgames.com/lol/static-data/v3/champions?api_key=`;
+    //const url = 'http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
+    makeAjaxCall(query, function (response) {
+        championList = JSON.parse(response).data;
     });
 }
 
@@ -58,7 +55,7 @@ function getSummonerIdFromName() {
  * @return {string}
  */
 function getChampionIdFromName(name) {
-    return championList[name].key;
+    return championList[name].id;
 }
 
 function makeAjaxCall(query, callback) {

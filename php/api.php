@@ -19,13 +19,12 @@ $apiKey = 'RGAPI-7c7b8eea-9094-40f7-9d66-68bdf79c1031';
 
 header('Access-Control-Allow-Origin: *');
 
-$query = $_REQUEST['query'];
-if ($query == ''){
-    $result = 'ERROR: No query found';
-} else {
+if (isset($_REQUEST['query'])){
+    $query = $_REQUEST['query'];
     $result = file_get_contents($query . $apiKey);
+} else {
+    $result = 'ERROR: No query found';
 }
-
 echo $result;
 
 ?>
