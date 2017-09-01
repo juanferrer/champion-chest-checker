@@ -15,16 +15,18 @@
 
 // }
 
-$apiKey = 'RGAPI-7c7b8eea-9094-40f7-9d66-68bdf79c1031';
+$apiKey = 'RGAPI-c4287473-abc3-4656-ae88-3f1613b1fc76';
 
 header('Access-Control-Allow-Origin: *');
+//header('Content-Type: application/json; charset=UTF-8');
 
 if (isset($_REQUEST['query'])){
     $query = $_REQUEST['query'];
     $result = file_get_contents($query . $apiKey);
+    print json_encode($result);
 } else {
-    $result = 'ERROR: No query found';
+    header('HTTP/1.1 500 Internal Server Error');
+    die(json_encode(array('message' => 'Invalid query', 'code' => 100)));
 }
-echo $result;
 
 ?>

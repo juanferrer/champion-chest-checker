@@ -2,15 +2,36 @@
     margin: 2px;
 }
 
+body {
+    height: 100vh;
+}
+
+#outer-container {
+    height: 100%;
+    display: flex;
+    align-items: middle;
+}
+
+#container {
+    height: 100px;
+    margin: auto;
+    width: 270px;
+}
+
 label {
     display: inline-block;
-    width: 100px;
+    width: 30%;
 }
 
 #region-selector {
-    width: 70px;
+    width: 63.5%;
 }
 
 button {
-    width: 100px;
+    width: 100%;
+    margin: auto;
+}
+
+input[type="text"] {
+    width: 62%;
 }
