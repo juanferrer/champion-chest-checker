@@ -1,11 +1,14 @@
 // Populate region-selector with options from JSON
 /** Comes from the JSON file */
-const apiKey = 'RGAPI-006456f5-9fc1-45d2-baa8-d61858fc6638';
 let regionalEndpoints = {};
-let regionalEndpoint = summonerName = summonerId = championName = championId = '';
+let regionalEndpoint = summonerName = summonerId = championName = championLvl = championId = '';
+let hasChest = false;
+
+const url = 'https://diabolic-straps.000webhostapp.com/api.php';
 
 /** List of ChampionDto */
 let championList = [];
+populateChampionList();
 
 $.getJSON('regionalEndpoint.json', function (json) {
     regionalEndpoints = json;
@@ -41,13 +44,12 @@ function populateChampionList() {
  * Get the ID of a summoner from the name
  * @return {string}
  */
-function getSummonerIdFromName(name) {
-    const url = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${name}?api_key=${apiKey}`
-    $.ajax({
-        url: url,
-        success: function (result) {
-            return result.id;
-        }
+function getSummonerIdFromName() {
+    const query = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=`;
+
+    makeAjaxCall(query, function (response) {
+        summonerId = JSON.parse(response).id;
+        getMasteryFromIds();
     });
 }
 
@@ -59,6 +61,27 @@ function getChampionIdFromName(name) {
     return championList[name].key;
 }
 
+function makeAjaxCall(query, callback) {
+    $.ajax({
+        url: url,
+        type: 'POST',
+        success: callback,
+        data: {
+            'query': query
+        }
+    });
+}
+
+function getMasteryFromIds() {
+    const query = `https://${regionalEndpoint}.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/${summonerId}/by-champion/${championId}?api_key=`;
+    makeAjaxCall(query, function (response) {
+        const result = JSON.parse(response);
+        hasChest = result.chestGranted;
+        championLevel = result.championLevel;
+        alert(hasChest);
+    });
+}
+
 /**
  * Core function. Check if the specified summoner has unlocked a chest with the
  * specified champion.
@@ -66,10 +89,10 @@ function getChampionIdFromName(name) {
 function checkChampionChest() {
     let urlRequest = '';
 
-    let hasChest = '';
-
-    populateChampionList();
+    // populateChampionList();
     regionalEndpoint = $('#region-selector').val();
     summonerName = $('#summoner-name-textbox').val();
-    summonerId = getSummonerIdFromName(summonerName);
+    championName = $('#champion-name-textbox').val();
+    championId = getChampionIdFromName(championName);
+    getSummonerIdFromName();
 }

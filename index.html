@@ -2,22 +2,20 @@
 <html>
 
 <head>
-    <meta charset='UTF-8'>
+    <meta charset="UTF-8">
     <title>Champion Chest Check</title>
     <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 
 <body>
-    <div>
-        <label for='region-selector'>Region</label>
-        <select id='region-selector'>
+    <label for="region-selector">Region</label>
+    <select id="region-selector" name="regionSelector">
         </select><br>
-        <label for='summoner-name-textbox'>Summoner</label>
-        <input type='text' id='summoner-name-textbox' /><br>
-        <label for='champion-name-textbox'>Champion</label>
-        <input type='text' id='champion-name-textbox' /><br>
-        <button onclick='checkChampionChest()'>Check</button>
-    </div>
+    <label for="summoner-name-textbox">Summoner</label>
+    <input type="text" id="summoner-name-textbox" name="summonerName" /><br>
+    <label for="champion-name-textbox">Champion</label>
+    <input type="text" id="champion-name-textbox" name="championName" /><br>
+    <button onclick="checkChampionChest()">Check</button>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </body>
