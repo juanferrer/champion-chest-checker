@@ -4,17 +4,36 @@
 
 body {
     height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
 }
 
-#outer-container {
-    height: 100%;
-    display: flex;
-    align-items: middle;
+.background {
+    /* z-index: -1; */
+    height: 717px;
+    width: 1215px; 
+    top: 10vh;
+    left: 18.5vw;
+    position: absolute;
+    background-repeat: no-repeat;
+    /* pointer-events: none; */
+    border-radius: 50px;
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Gragas_0.jpg');
+    transition: all 1s ease-in-out;
+}
+
+#background-0 {
+    z-index: -2;
+}
+
+#background-1 {
+    z-index: -1;
 }
 
 #container {
     height: 100px;
-    margin: auto;
+    margin: 25px auto;
     width: 270px;
 }
 

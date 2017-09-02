@@ -1,15 +1,37 @@
-// Populate region-selector with options from JSON
+
+/**
+ * TODO:
+ * - Cache champions every day
+ * - Add update limit (to avoid hitting rate limit)
+ *       - Add loading bar on button cooldown (makes it look cooler)
+ * - Add images from here: https://developer.riotgames.com/static-data.html
+ *      - Phones should use http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg
+ *      - PCs and tablets should use http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg
+ *      - There should be 2 backgrounds. One on top (shown) and one on the bottom (where the new image is loaded).
+ *        Then, top opacity transitions to 0 and it becomes bottom, where we draw again. There needs to be an index
+ *        indicating which one is top at any given time
+ * - Make a cool animation that drops the container to the bottom of the screen when the check starts
+ */
+
+
+
 /** Comes from the JSON file */
 let regionalEndpoints = {};
 let regionalEndpoint = summonerName = summonerId = championName = championLvl = championId = '';
 let hasChest = false;
+
+/** Contains the index of the image buffer that is currently on the bottom */
+let currentBottomBuffer = 0;
+
+/** Time allowed between conversions */
+const timeout = 5000;
 
 const url = 'https://diabolic-straps.000webhostapp.com/api.php';
 
 /** List of ChampionDto */
 let championList = [];
 
-// Populate region-selector
+// Populate region-selector with options from JSON
 $.getJSON('regionalEndpoint.json', function (json) {
     regionalEndpoints = json;
     let regionSelector = $('#region-selector');
@@ -19,7 +41,7 @@ $.getJSON('regionalEndpoint.json', function (json) {
                 .attr('value', v)
                 .text(k.toUpperCase()));
     });
-    $('#region-selector option[value="euw1"').attr('selected', true);
+    $('#region-selector option[value="euw1"]').attr('selected', true);
 });
 
 /**
@@ -28,14 +50,19 @@ $.getJSON('regionalEndpoint.json', function (json) {
  */
 function populateChampionList() {
 
-    // Should change to the static data at some point
-    const query = `https://ru.api.riotgames.com/lol/static-data/v3/champions?api_key=`;
-    //const url = 'https://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
+    const query = `https://la2.api.riotgames.com/lol/static-data/v3/champions?api_key=`;
+    //const query = 'https://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
     makeAjaxCall(query, function (response) {
-        console.log("List populated");
-        championList = JSON.parse(response).data;
-        championId = getChampionIdFromName(championName);
-        getSummonerIdFromName();
+        try {
+            //console.log(response);
+            championList = JSON.parse(response).data;
+            championId = getChampionIdFromName(championName);
+            console.log("List populated");
+            getSummonerIdFromName();
+        } catch (e) {
+            console.log(e);
+            alert("Unable to get champion list");
+        }
     });
 }
 
@@ -61,14 +88,33 @@ function getChampionIdFromName(name) {
     // Remove spaces and special characters and capitalise
     // name = name.replace(' ', '');//.toLowerCase());
     // if (name.match(/\W/)) {
-        
+
     // }
     const tempId = championList[name].id;
     if (tempId) {
-        document.getElementsByTagName('body')[0].style.backgroundImage = `url('http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg')`;
         return tempId;
     } else {
+        alert('Champion not found. Make sure you wrote the name correctly');
     }
+}
+
+/**
+ * Change the image from the bottom buffer, change opacity from the top buffer and swap buffers
+ */
+function changeBackground() {
+    document.getElementById(`background-${currentBottomBuffer}`).style.backgroundImage
+    = `url('http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg')`;
+    
+    // Make the top buffer transition to invisible
+    document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
+    
+    setTimeout(function () {
+        document.getElementById(`background-${currentBottomBuffer}`).style.zIndex = -1;
+        // Change the other one to be the one on the bottom now
+        document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.zIndex = -2;
+        document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 1;
+        currentBottomBuffer = currentBottomBuffer == 1 ? 0 : 1;
+    }, timeout);
 }
 
 /**
@@ -82,7 +128,7 @@ function makeAjaxCall(query, callback) {
         type: 'GET',
         success: callback,
         error: function (xhr, ajaxOptions, error) {
-          console.log('Error occured: ' + xhr.responseText);  
+            console.log('Error occured: ' + xhr.responseText);
         },
         data: {
             'query': query
@@ -94,13 +140,14 @@ function makeAjaxCall(query, callback) {
  * Get the mastery information from IDs
  */
 function getMasteryFromIds() {
+    changeBackground();
     const query = `https://${regionalEndpoint}.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/${summonerId}/by-champion/${championId}?api_key=`;
     makeAjaxCall(query, function (response) {
         console.log("Mastery received");
         const result = JSON.parse(response);
         hasChest = result.chestGranted;
         championLevel = result.championLevel;
-        alert(hasChest);
+        //alert(hasChest);
     });
 }
 
