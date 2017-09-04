@@ -6,7 +6,7 @@ function isCurrentFile($file) {
     return $filedate == $todaydate;
 }
 
-$apiKey = 'RGAPI-09346a09-9021-4d52-b719-d639ad345993';
+$apiKey = 'RGAPI-KEY';
 
 header('Access-Control-Allow-Origin: *');
 
