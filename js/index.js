@@ -79,15 +79,36 @@ function getSummonerIdFromName() {
 function getChampionIdFromName(name) {
     // Remove spaces and special characters and capitalise
     // name = name.replace(' ', '');//.toLowerCase());
-    // if (name.match(/\W/)) {
-
-    // }
     const tempId = championList[name].id;
     if (tempId) {
         return tempId;
     } else {
         alert('Champion not found. Make sure you wrote the name correctly');
     }
+}
+
+/**
+ * Return the name without non-word chars and the right case
+ * @param {string} name Name to be converted
+ * @return {string} Name validated 
+ */
+function validateName(name) {
+    name = name.toLowerCase();
+if (!name.match(' ')) {
+    name = name[0].toUpperCase() + name.slice(1, name.length);
+} else {
+    name = toTitleCase(name);
+}
+return name.replace(/\W/, '');
+}
+
+/**
+ * Capitalise the first letter of each word
+ * @param {string} str String to convert 
+ */
+function toTitleCase(str)
+{
+return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
 /**
@@ -154,6 +175,6 @@ function checkChampionChest() {
 
     regionalEndpoint = $('#region-selector').val();
     summonerName = $('#summoner-name-textbox').val();
-    championName = $('#champion-name-textbox').val();
+    championName = validateName($('#champion-name-textbox').val());
     populateChampionList();
 }
