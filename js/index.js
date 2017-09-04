@@ -94,21 +94,20 @@ function getChampionIdFromName(name) {
  */
 function validateName(name) {
     name = name.toLowerCase();
-if (!name.match(' ')) {
-    name = name[0].toUpperCase() + name.slice(1, name.length);
-} else {
-    name = toTitleCase(name);
-}
-return name.replace(/\W/, '');
+    if (!name.match(' ')) {
+        name = name[0].toUpperCase() + name.slice(1, name.length);
+    } else {
+        name = toTitleCase(name);
+    }
+    return name.replace(/\W/, '');
 }
 
 /**
  * Capitalise the first letter of each word
  * @param {string} str String to convert 
  */
-function toTitleCase(str)
-{
-return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
 /**
@@ -122,12 +121,16 @@ function changeBackground() {
     document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
 
     setTimeout(function () {
-        document.getElementById(`background-${currentBottomBuffer}`).style.zIndex = -1;
-        // Change the other one to be the one on the bottom now
+
+        document.getElementById(`background-${currentBottomBuffer}`).style.zIndex = 0;
         document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.zIndex = -2;
-        document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 1;
-        currentBottomBuffer = currentBottomBuffer == 1 ? 0 : 1;
-    }, timeout);
+        // Change the other one to be the one on the bottom now
+        document.getElementById(`background-${currentBottomBuffer}`).style.zIndex = -1;
+        setTimeout(function (indexToChange) {
+            document.getElementById(`background-${indexToChange}`).style.opacity = 1;
+        }, 2000, (currentBottomBuffer + 1) % 2);
+    currentBottomBuffer = currentBottomBuffer == 1 ? 0 : 1;
+}, timeout);
 }
 
 /**

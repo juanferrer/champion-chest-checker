@@ -42,6 +42,7 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
     background-color: rgba(200, 200, 200, 0.5);
     box-shadow: 0 0 15px rgba(200, 200, 200, 0.5);
     padding: 10px;
+    z-index: 1;
 }
 
 label {
