@@ -1,15 +1,11 @@
 
 /**
  * TODO:
- * - Cache champions every day
  * - Add update limit (to avoid hitting rate limit)
  *       - Add loading bar on button cooldown (makes it look cooler)
  * - Add images from here: https://developer.riotgames.com/static-data.html
  *      - Phones should use http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg
  *      - PCs and tablets should use http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg
- *      - There should be 2 backgrounds. One on top (shown) and one on the bottom (where the new image is loaded).
- *        Then, top opacity transitions to 0 and it becomes bottom, where we draw again. There needs to be an index
- *        indicating which one is top at any given time
  * - Make a cool animation that drops the container to the bottom of the screen when the check starts
  */
 
@@ -50,9 +46,9 @@ $.getJSON('regionalEndpoint.json', function (json) {
  */
 function populateChampionList() {
 
-    const query = `https://la2.api.riotgames.com/lol/static-data/v3/champions?api_key=`;
+    const query = `https://ru.api.riotgames.com/lol/static-data/v3/champions?api_key=`;
     //const query = 'https://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
-    makeAjaxCall(query, function (response) {
+    makeAjaxCall(query, "championList", function (response) {
         try {
             //console.log(response);
             championList = JSON.parse(response).data;
@@ -73,7 +69,7 @@ function populateChampionList() {
 function getSummonerIdFromName() {
     const query = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=`;
 
-    makeAjaxCall(query, function (response) {
+    makeAjaxCall(query, "summonerId", function (response) {
         console.log("ID received");
         summonerId = JSON.parse(response).id;
         getMasteryFromIds();
@@ -122,7 +118,7 @@ function changeBackground() {
  * @param {string} query URL for request without the API key
  * @param {function} callback Function to be called on success
  */
-function makeAjaxCall(query, callback) {
+function makeAjaxCall(query, request, callback) {
     $.ajax({
         url: url,
         type: 'GET',
@@ -131,6 +127,7 @@ function makeAjaxCall(query, callback) {
             console.log('Error occured: ' + xhr.responseText);
         },
         data: {
+            'request': request,
             'query': query
         }
     });
@@ -142,7 +139,7 @@ function makeAjaxCall(query, callback) {
 function getMasteryFromIds() {
     changeBackground();
     const query = `https://${regionalEndpoint}.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/${summonerId}/by-champion/${championId}?api_key=`;
-    makeAjaxCall(query, function (response) {
+    makeAjaxCall(query, "championMastery", function (response) {
         console.log("Mastery received");
         const result = JSON.parse(response);
         hasChest = result.chestGranted;

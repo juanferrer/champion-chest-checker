@@ -12,8 +12,3 @@ Steps taken to acomplish:
 0. Get `championName`: user input
 0. Get `championId`: search list until `championName` is found
 0. Get `chestGranted`: search list until `championId` is found
-
-Stuff that could be added:
-
-- A simple call to `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{championName}_0.jpg` could return an image to set as background. For example: ![Ornn splash art](http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ornn_0.jpg)
-Pretty cool, eh?

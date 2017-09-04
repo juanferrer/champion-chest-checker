@@ -1,12 +1,30 @@
 <?php
 
-$apiKey = 'RGAPI-3e2297c4-8707-45d2-9842-3696b147fbd6';
+function isCurrentFile($file) {
+    $filedate = date("Ymd", filemtime($file));
+    $todaydate  = date("Ymd");
+    return $filedate == $todaydate;
+}
+
+$apiKey = 'RGAPI-09346a09-9021-4d52-b719-d639ad345993';
 
 header('Access-Control-Allow-Origin: *');
 
 if (isset($_REQUEST['query'])){
-    $query = $_REQUEST['query'];
-    $result = file_get_contents($query . $apiKey);
+    if (null !== $_REQUEST['request'] and $_REQUEST['request'] == 'championList' and
+    isCurrentFile('./championList.json')) {
+        // If we have a championList from today, we might as well use that one
+        $result = file_get_contents('./championList.json');
+    } else {
+        // But if we don't (or it's old), request it again
+        $query = $_REQUEST['query'];
+        $result = file_get_contents($query . $apiKey);
+        
+        if (null !== $_REQUEST['request'] and $_REQUEST['request'] == 'championList') {
+            // Now, cache it. We'll use this for next request
+            file_put_contents('./championList.json', $result);
+        }
+    }
     echo $result;
 } else {
     header('HTTP/1.1 500 Internal Server Error');
