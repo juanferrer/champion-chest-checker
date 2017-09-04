@@ -47,7 +47,6 @@ $.getJSON('regionalEndpoint.json', function (json) {
 function populateChampionList() {
 
     const query = `https://ru.api.riotgames.com/lol/static-data/v3/champions?api_key=`;
-    //const query = 'https://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json';
     makeAjaxCall(query, "championList", function (response) {
         try {
             //console.log(response);
@@ -99,11 +98,11 @@ function getChampionIdFromName(name) {
  */
 function changeBackground() {
     document.getElementById(`background-${currentBottomBuffer}`).style.backgroundImage
-    = `url('http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg')`;
-    
+        = `url('http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg')`;
+
     // Make the top buffer transition to invisible
     document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
-    
+
     setTimeout(function () {
         document.getElementById(`background-${currentBottomBuffer}`).style.zIndex = -1;
         // Change the other one to be the one on the bottom now
@@ -138,12 +137,14 @@ function makeAjaxCall(query, request, callback) {
  */
 function getMasteryFromIds() {
     changeBackground();
+
     const query = `https://${regionalEndpoint}.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/${summonerId}/by-champion/${championId}?api_key=`;
     makeAjaxCall(query, "championMastery", function (response) {
         console.log("Mastery received");
         const result = JSON.parse(response);
         hasChest = result.chestGranted;
         championLevel = result.championLevel;
+        $('#chest-unlocked-icon').attr('src', `./img/${hasChest ? 'un' : ''}lock.svg`)
         //alert(hasChest);
     });
 }
