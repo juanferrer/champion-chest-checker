@@ -6,7 +6,6 @@
  * - Add images from here: https://developer.riotgames.com/static-data.html
  *      - Phones should use http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg
  *      - PCs and tablets should use http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg
- * - Make a cool animation that drops the container to the bottom of the screen when the check starts
  */
 
 
@@ -42,7 +41,6 @@ $.getJSON('regionalEndpoint.json', function (json) {
 
 /**
  * Retrieve a list with details of all champions. should be called once per day
- * @return {object[]}
  */
 function populateChampionList() {
 
@@ -63,7 +61,6 @@ function populateChampionList() {
 
 /**
  * Get the ID of a summoner from the name
- * @return {string}
  */
 function getSummonerIdFromName() {
     const query = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=`;
@@ -145,7 +142,6 @@ function getMasteryFromIds() {
         hasChest = result.chestGranted;
         championLevel = result.championLevel;
         $('#chest-unlocked-icon').attr('src', `./img/${hasChest ? 'un' : ''}lock.svg`)
-        //alert(hasChest);
     });
 }
 
