@@ -60,12 +60,12 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
 label {
     display: inline-block;
     text-align: center;
-    width: 20%;
+    width: 30%;
     margin: 5px;
 }
 
 #region-selector {
-    width: 75%;
+    width: 60%;
     margin: 5px 0;
 }
 
@@ -76,16 +76,17 @@ button {
 
 input[type="text"] {
     margin: 5px 0;
-    width: 75%;
+    width: 60%;
 }
 
 #chest-unlocked-icon {
     /* height: 100%; */
-    width: 30%;
-    vertical-align: middle;
-    text-align: center;
+    width: 35%;
 }
 
 #chest-unlocked-icon img {
-    height: 100%;
+    /* vertical-align: middle; */
+    /* text-align: center; */
+    height: 80%;
+    margin: 16px 0;
 }
