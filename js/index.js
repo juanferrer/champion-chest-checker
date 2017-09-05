@@ -121,7 +121,7 @@ function changeBackground() {
     document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
 
     setTimeout(function () {
-
+        $('#container').style.opacity = 0.25;
         document.getElementById(`background-${currentBottomBuffer}`).style.zIndex = 0;
         document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.zIndex = -2;
         // Change the other one to be the one on the bottom now

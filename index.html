@@ -12,16 +12,18 @@
     <div id="background-0" class="background"></div>
     <div id="background-1" class="background"></div>
     <div id="container">
-        <label for="region-selector">Region</label>
-        <select id="region-selector">
-        </select><br>
-        <label for="summoner-name-textbox">Summoner</label>
-        <input type="text" id="summoner-name-textbox" /><br>
-        <label for="champion-name-textbox">Champion</label>
-        <input type="text" id="champion-name-textbox" /><br>
-        <button onclick="checkChampionChest()">Check</button>
-        <div>
-        <img id="chest-unlocked-icon" alt="Chest status" src="./img/lock.svg" viewBox="0 0 100 100">
+        <div id="form-container">
+            <label for="region-selector">Region</label>
+            <select id="region-selector">
+            </select><br/>
+            <label for="summoner-name-textbox">Summoner</label>
+            <input type="text" id="summoner-name-textbox" /><br>
+            <label for="champion-name-textbox">Champion</label>
+            <input type="text" id="champion-name-textbox" /><br>
+            <button onclick="checkChampionChest()">Check</button>
+        </div>
+        <div id="chest-unlocked-icon">
+            <img alt="Chest status" src="./img/lock.svg" >
         </div>
     </div>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>

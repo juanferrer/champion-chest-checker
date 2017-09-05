@@ -1,6 +1,7 @@
 * {
     margin: 2px;
     font-family: 'Crushed', cursive;
+    font-size: 25px;
 }
 
 body {
@@ -34,42 +35,57 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
 }
 
 #container {
-    position: relative;
-    right: 50px;
-    height: 100px;
-    margin: 25px auto;
-    width: 270px;
+    display: flex;
+    flex-direction: row;
+    /* height: 100px; */
+    margin: 10px auto;
+    width: 50vw;
+    min-width: 500px;
     background-color: rgba(200, 200, 200, 0.5);
     box-shadow: 0 0 15px rgba(200, 200, 200, 0.5);
     padding: 10px;
     z-index: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+#container:hover {
+    opacity: 1;
+}
+
+#form-container {
+    width: 70%;
+    padding: 10px;
 }
 
 label {
     display: inline-block;
-    width: 30%;
+    text-align: center;
+    width: 20%;
+    margin: 5px;
 }
 
 #region-selector {
-    width: 63.5%;
+    width: 75%;
+    margin: 5px 0;
 }
 
 button {
     width: 100%;
-    margin: auto;
+    margin: 5px auto;
 }
 
 input[type="text"] {
-    width: 62%;
+    margin: 5px 0;
+    width: 75%;
 }
 
 #chest-unlocked-icon {
-    position: absolute;
-    bottom: -2px;
-    right: -120px;
-    padding: 10px;
-    width: 100px;
-    height: 100px;
-    background-color: rgba(200, 200, 200, 0.5);
-    box-shadow: 0 0 15px rgba(200, 200, 200, 0.5);
+    /* height: 100%; */
+    width: 30%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#chest-unlocked-icon img {
+    height: 100%;
 }
