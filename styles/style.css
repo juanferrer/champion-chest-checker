@@ -46,6 +46,7 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
     padding: 10px;
     z-index: 1;
     transition: all 0.2s ease-in-out;
+    opacity: 0.25;
 }
 
 #container:hover {
@@ -79,14 +80,17 @@ input[type="text"] {
     width: 60%;
 }
 
-#chest-unlocked-icon {
+#chest-unlocked-icon-container {
     /* height: 100%; */
     width: 35%;
+    text-align: center;
 }
 
-#chest-unlocked-icon img {
+#chest-unlocked-icon {
     /* vertical-align: middle; */
     /* text-align: center; */
     height: 80%;
-    margin: 16px 0;
+    width: 100%;
+    max-width: 150px;
+    margin-top: 10%;
 }
