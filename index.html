@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Champion Chest Check</title>
     <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Crushed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 </head>
 
 <body>
@@ -13,17 +13,19 @@
     <div id="background-1" class="background"></div>
     <div id="container">
         <div id="form-container">
-            <label for="region-selector">Region</label>
-            <select id="region-selector">
-            </select><br/>
-            <label for="summoner-name-textbox">Summoner</label>
-            <input type="text" id="summoner-name-textbox" /><br>
-            <label for="champion-name-textbox">Champion</label>
-            <input type="text" id="champion-name-textbox" /><br>
-            <button onclick="checkChampionChest()">Check</button>
+            <!-- <label for="summoner-name-textbox">Summoner</label> -->
+            <input type="text" id="summoner-name-textbox" placeholder="Summoner name" /><br>
+            <!-- <label for="champion-name-textbox">Champion</label> -->
+            <input type="text" id="champion-name-textbox" placeholder="Champion name" /><br>
+            <div id="bottom-row">
+                <!-- <label for="region-selector">Region</label> -->
+                <select id="region-selector">
+                </select><br/>
+                <button onclick="checkChampionChest()">Check</button>
+            </div>
         </div>
         <div id="chest-unlocked-icon-container">
-            <img id="chest-unlocked-icon" alt="Chest status" src="./img/lock.svg" >
+            <img id="chest-unlocked-icon" alt="Chest status" src="./img/lock.svg">
         </div>
     </div>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
