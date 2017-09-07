@@ -63,7 +63,7 @@ function populateChampionList() {
  * Get the ID of a summoner from the name
  */
 function getSummonerIdFromName() {
-    const query = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonerName}?api_key=`;
+    const query = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${encodeURIComponent(summonerName)}?api_key=`;
 
     makeAjaxCall(query, "summonerId", function (response) {
         console.log("ID received");
@@ -109,7 +109,9 @@ function validateName(name) {
  * @return {boolean} 
  */
 function isValidSummoner(name) {
-    return (name.match(/^(\p{L}|[ _.])+$/));
+    let regex = XRegExp("^(\\p{L}|[ _.]|\d)+$");
+    //return name.match(/^(\p{L}|[ _.])+$/);
+    return regex.test(name);
 }
 
 /**
