@@ -34,6 +34,18 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
     transition: all 1s ease-in-out;
 }
 
+@media (orientation: portrait) {
+    .background {
+        background-size: contain
+    }
+}
+
+@media (orientation: landscape) {
+    .background {
+        background-size: auto 100% ;
+    }
+}
+
 #background-0 {
     z-index: -2;
 }
@@ -41,7 +53,6 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
 #background-1 {
     z-index: -1;
 }
-
 
 #container {
     display: flex;
@@ -60,6 +71,7 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
     width: 70%;
     padding: 10px;
 }
+
 
 /* label {
     display: inline-block;
@@ -98,7 +110,7 @@ button {
     border-radius: 5px;
     border-color: transparent;
     box-shadow: 0px 3px 0px hsl(0, 0%, 25%);
-    box-shadow: 0px 3px 0px hsl(0, 0%, 25%), 0px 3px 5px rgba(0,0,0,.4);
+    box-shadow: 0px 3px 0px hsl(0, 0%, 25%), 0px 3px 5px rgba(0, 0, 0, .4);
     transition: all 0.2s ease-in-out;
 }
 
