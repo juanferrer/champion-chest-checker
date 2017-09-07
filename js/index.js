@@ -93,13 +93,23 @@ function getChampionIdFromName(name) {
  * @return {string} Name validated 
  */
 function validateName(name) {
-    name = name.toLowerCase();
-    if (!name.match(' ')) {
-        name = name[0].toUpperCase() + name.slice(1, name.length);
-    } else {
-        name = toTitleCase(name);
-    }
-    return name.replace(/\W/, '');
+        // Is champion
+        name = name.toLowerCase();
+        if (!name.match(' ')) {
+            name = name[0].toUpperCase() + name.slice(1, name.length);
+        } else {
+            name = toTitleCase(name);
+        }
+        return name.replace(/\W/, '');
+}
+
+/**
+ * Check if the name given is valid
+ * @param {string} name Summoner name to check
+ * @return {boolean} 
+ */
+function isValidSummoner(name) {
+    return (name.match(/^(\p{L}|[ _.])+$/));
 }
 
 /**
@@ -115,7 +125,7 @@ function toTitleCase(str) {
  */
 function changeBackground() {
     document.getElementById(`background-${currentBottomBuffer}`).style.backgroundImage
-        = `url('https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1)? 'loading' : 'splash'}/${championName}_0.jpg')`;
+        = `url('https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1) ? 'loading' : 'splash'}/${championName}_0.jpg')`;
 
     // Make the top buffer transition to invisible
     document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
@@ -128,8 +138,8 @@ function changeBackground() {
         setTimeout(function (indexToChange) {
             document.getElementById(`background-${indexToChange}`).style.opacity = 1;
         }, 2000, (currentBottomBuffer + 1) % 2);
-    currentBottomBuffer = currentBottomBuffer == 1 ? 0 : 1;
-}, timeout);
+        currentBottomBuffer = currentBottomBuffer == 1 ? 0 : 1;
+    }, timeout);
 }
 
 /**
@@ -177,6 +187,10 @@ function checkChampionChest() {
 
     regionalEndpoint = $('#region-selector').val();
     summonerName = $('#summoner-name-textbox').val();
+    if (!isValidSummoner(summonerName)) {
+        alert("That is not a valid summoner name");
+        return;
+    }
     championName = validateName($('#champion-name-textbox').val());
     populateChampionList();
 }
