@@ -61,18 +61,18 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
     padding: 10px;
 }
 
-label {
+/* label {
     display: inline-block;
     text-align: center;
     width: 30%;
     margin: 5px;
-}
+} */
 
 input[type="text"] {
     margin: 5px auto;
     padding: 1%;
     width: 97%;
-    background-color: rgba(150, 150, 150, 1);
+    background-color: rgba(150, 150, 150, 0.5);
     border-color: transparent;
 }
 

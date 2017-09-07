@@ -115,7 +115,7 @@ function toTitleCase(str) {
  */
 function changeBackground() {
     document.getElementById(`background-${currentBottomBuffer}`).style.backgroundImage
-        = `url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg')`;
+        = `url('https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1)? 'loading' : 'splash'}/${championName}_0.jpg')`;
 
     // Make the top buffer transition to invisible
     document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
