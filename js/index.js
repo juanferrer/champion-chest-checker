@@ -36,7 +36,7 @@ $.getJSON('regionalEndpoint.json', function (json) {
                 .attr('value', v)
                 .text(k.toUpperCase()));
     });
-    $('#region-selector option[value="euw1"]').attr('selected', true);
+    // $('#region-selector option[value="euw1"]').attr('selected', true);
 });
 
 /**
