@@ -1,6 +1,9 @@
 <?php
 
 function isCurrentFile($file) {
+    if (!file_exists($file)) {
+        return FALSE;
+    }
     $filedate = date("Ymd", filemtime($file));
     $todaydate  = date("Ymd");
     return $filedate == $todaydate;
@@ -22,6 +25,7 @@ if (isset($_REQUEST['query'])){
         
         if (null !== $_REQUEST['request'] and $_REQUEST['request'] == 'championList') {
             // Now, cache it. We'll use this for next request
+            unlink('.championList.json');
             file_put_contents('./championList.json', $result);
         }
     }
