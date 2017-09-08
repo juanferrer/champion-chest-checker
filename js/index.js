@@ -3,7 +3,6 @@
  * TODO:
  * - Add update limit (to avoid hitting rate limit)
  *       - Add loading bar on button cooldown (makes it look cooler)
- * - Inline name validation: field goes red
  */
 
 
@@ -34,8 +33,11 @@ $.getJSON('regionalEndpoint.json', function (json) {
                 .attr('value', v)
                 .text(k.toUpperCase()));
     });
-    // $('#region-selector option[value='euw1']').attr('selected', true);
 });
+
+$('.name-input').on('change', function() {
+    $(this).removeClass('invalid');
+})
 
 /**
  * Generic AJAX call
@@ -122,7 +124,7 @@ function checkChampionChest() {
     regionalEndpoint = $('#region-selector').val();
     summonerName = $('#summoner-name-textbox').val();
     if (!isValidSummoner(summonerName)) {
-        alert('That is not a valid summoner name');
+        $('#summoner-name-textbox').addClass('invalid');
         return;
     }
     championName = validateName($('#champion-name-textbox').val());
@@ -155,7 +157,7 @@ function getChampionIdFromName(name) {
     if (tempId) {
         return tempId;
     } else {
-        alert('Champion not found. Make sure the name is correct.');
+        $('#champion-name-textbox').addClass('invalid');
     }
 }
 
@@ -167,11 +169,11 @@ function getSummonerIdFromName() {
 
     makeAjaxCall(data, 'summonerId', function (response) {
         console.log('ID received');
-        summonerId = JSON.parse(response).id;
-        if (summonerId) {
+        try {
+            summonerId = JSON.parse(response).id;
             getMasteryFromIds();
-        } else {
-            alert('Summoner not found. Make sure the name and the region are correct.');
+        } catch (e) {
+            $('#summoner-name-textbox').addClass('invalid');
         }
     });
 }

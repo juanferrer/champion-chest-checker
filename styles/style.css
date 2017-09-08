@@ -4,163 +4,164 @@
 /* Defining colors here */
 
 :root {
-    --container-color: hsla(0, 0%, 100%, 0.5);
-    
-    --main-color: hsla(0, 0%, 25%, 0.5);
-    --main-color-light: hsla(0, 0%, 100%, 0.5);
-  
-    --secondary-color: hsla(25, 50%, 25%, 0.5);
-    --secondary-color-light: hsla(25, 50%, 25%, 0.5);
-  
-    --accent-color: hsla(340, 82%, 52%, 1);
-    --accent-color-light: hsla(340, 82%, 62%, 1);
-  }
-  
-  * {
-    margin: 2px;
-    font-family: 'Raleway', sans-serif;
-    font-size: 15px;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  *:focus {
-    outline: none;
-    border-color: transparent;
-  }
-  
-  body {
-    height: 100vh;
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-    background-color: #000000;
-  }
+  --container-color: hsla(0, 0%, 100%, 0.5);
+  --main-color: hsla(0, 0%, 25%, 0.5);
+  --main-color-light: hsla(0, 0%, 100%, 0.5);
+  --secondary-color: hsla(25, 50%, 25%, 0.5);
+  --secondary-color-light: hsla(25, 50%, 25%, 0.5);
+  --accent-color: hsla(340, 82%, 52%, 1);
+  --accent-color-light: hsla(340, 82%, 62%, 1);
+}
+
+* {
+  margin: 2px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+*:focus {
+  outline: none;
+  border-color: transparent;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background-color: #000000;
+}
 
 
 /* [Shedding tears of joy]
 https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image/ */
 
 .background {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    pointer-events: none;
-    background-position: center center;
-    background-repeat: no-repeat;
-    transition: all 1s ease-in-out;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transition: all 1s ease-in-out;
 }
 
 @media (orientation: portrait) {
-    .background {
-        background-size: contain
-    }
+  .background {
+    background-size: contain
+  }
 }
 
 @media (orientation: landscape) {
-    .background {
-        background-size: auto 100%;
-    }
+  .background {
+    background-size: auto 100%;
+  }
 }
 
 #background-0 {
-    z-index: -2;
+  z-index: -2;
 }
 
 #background-1 {
-    z-index: -1;
+  z-index: -1;
 }
 
 #container {
-    display: flex;
-    flex-direction: row;
-    margin: 10px auto 10vh;
-    width: 50vw;
-    min-width: 400px;
-    max-width: 500px;
-    background-color: var(--container-color);
-    padding: 10px;
-    z-index: 1;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  #form-container {
-    width: 70%;
-    padding: 10px;
-  }
-  
-  input[type="text"] {
-    margin: 5px auto;
-    padding: 1%;
-    width: 97%;
-    background-color: var(--main-color);
-    border-color: transparent;
-    border-radius: 5px;
-    /*   box-shadow: inset 0px 1px 2px hsla(0, 0%, 0%, 0.3); */
-  }
-  
-  input[type="text"]:focus {
-    /*   box-shadow: inset 0px 1px 2px hsla(0, 0%, 0%, 0.3), 0 0 2px 1px hsla(0, 0%, 100%, 1); */
-    box-shadow: 0 0 2px 1px hsla(0, 0%, 100%, 1);
-  }
-  
-  input[type="text"]:hover {
-    background-color: var(--main-color-light);
-  }
-  
-  #bottom-row {
-    display: inline-flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  select {
-    width: 50%;
-    /*   padding: 2px 0; */
-    margin: 5px auto;
-    position: relative;
-    right: 3px;
-    background-color: transparent;
-    border: none;
-    border-bottom: 2px solid var(--accent-color);
-    border-top: 2px solid transparent;
-    border-left: 2px solid transparent;
-  }
-  
-  select:hover {
-    border-top: 2px solid var(--accent-color);
-    border-left: 2px solid var(--accent-color);
-  }
-  
-  select:focus {
-    border-bottom: 2px solid var(--accent-color-light);
-  }
-  
-  button {
-    width: 50%;
+  display: flex;
+  flex-direction: row;
+  margin: 10px auto 10vh;
+  width: 50vw;
+  min-width: 400px;
+  max-width: 500px;
+  background-color: var(--container-color);
+  padding: 10px;
+  z-index: 1;
+  transition: all 0.2s ease-in-out;
+}
+
+#form-container {
+  width: 70%;
+  padding: 10px;
+}
+
+input[type="text"] {
+  margin: 5px auto;
+  padding: 1%;
+  width: 97%;
+  background-color: var(--main-color);
+  border-color: transparent;
+  border-radius: 5px;
+  /*   box-shadow: inset 0px 1px 2px hsla(0, 0%, 0%, 0.3); */
+}
+
+input[type="text"]:focus {
+  /*   box-shadow: inset 0px 1px 2px hsla(0, 0%, 0%, 0.3), 0 0 2px 1px hsla(0, 0%, 100%, 1); */
+  box-shadow: 0 0 2px 1px hsla(0, 0%, 100%, 1);
+}
+
+input[type="text"]:hover {
+  background-color: var(--main-color-light);
+}
+
+.invalid {
+  box-shadow: 0 0 3px 2px hsla(0, 70%, 50%, 1);
+}
+
+#bottom-row {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+select {
+  width: 50%;
   /*   padding: 2px 0; */
-    margin: 5px auto;
-    background-color: var(--accent-color);
-    border-radius: 5px;
-    border: 2px solid var(--accent-color);
-    color: var(--container-color);
-    /*   box-shadow: 0px 3px 0px hsl(0, 0%, 25%), 0px 3px 5px rgba(0, 0, 0, .4); */
-  }
-  
-  button:hover {
-     background-color: transparent;
-    color: var(--accent-color);
-  }
-  
-  button:focus {
-    background-color: var(--accent-color-light);
-  }
-  
-  #chest-unlocked-icon-container {
-    width: 35%;
-    text-align: center;
-  }
-  
-  #chest-unlocked-icon {
-    height: 100%;
-    max-width: 150px;
-  }
+  margin: 5px auto;
+  position: relative;
+  right: 3px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid var(--accent-color);
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+}
+
+select:hover {
+  border-top: 2px solid var(--accent-color);
+  border-left: 2px solid var(--accent-color);
+}
+
+select:focus {
+  border-bottom: 2px solid var(--accent-color-light);
+}
+
+button {
+  width: 50%;
+  /*   padding: 2px 0; */
+  margin: 5px auto;
+  background-color: var(--accent-color);
+  border-radius: 5px;
+  border: 2px solid var(--accent-color);
+  color: var(--container-color);
+  /*   box-shadow: 0px 3px 0px hsl(0, 0%, 25%), 0px 3px 5px rgba(0, 0, 0, .4); */
+}
+
+button:hover {
+  background-color: transparent;
+  color: var(--accent-color);
+}
+
+button:focus {
+  background-color: var(--accent-color-light);
+}
+
+#chest-unlocked-icon-container {
+  width: 35%;
+  text-align: center;
+}
+
+#chest-unlocked-icon {
+  height: 100%;
+  max-width: 150px;
+}
