@@ -3,9 +3,7 @@
  * TODO:
  * - Add update limit (to avoid hitting rate limit)
  *       - Add loading bar on button cooldown (makes it look cooler)
- * - Add images from here: https://developer.riotgames.com/static-data.html
- *      - Phones should use http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg
- *      - PCs and tablets should use http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg
+ * - Inline name validation: field goes red
  */
 
 
@@ -36,55 +34,27 @@ $.getJSON('regionalEndpoint.json', function (json) {
                 .attr('value', v)
                 .text(k.toUpperCase()));
     });
-    // $('#region-selector option[value="euw1"]').attr('selected', true);
+    // $('#region-selector option[value='euw1']').attr('selected', true);
 });
 
 /**
- * Retrieve a list with details of all champions. should be called once per day
+ * Generic AJAX call
+ * @param {string} query URL for request without the API key
+ * @param {function} callback Function to be called on success
  */
-function populateChampionList() {
-
-    const query = `https://ru.api.riotgames.com/lol/static-data/v3/champions?api_key=`;
-    makeAjaxCall(query, "championList", function (response) {
-        try {
-            //console.log(response);
-            championList = JSON.parse(response).data;
-            championId = getChampionIdFromName(championName);
-            console.log("List populated");
-            getSummonerIdFromName();
-        } catch (e) {
-            console.log(e);
-            alert("Unable to get champion list");
+function makeAjaxCall(dataJSON, request, callback) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: callback,
+        error: function (xhr, ajaxOptions, error) {
+            console.log('Error occured: ' + xhr.responseText);
+        },
+        data: {
+            'request': request,
+            'data': JSON.stringify(dataJSON)
         }
     });
-}
-
-/**
- * Get the ID of a summoner from the name
- */
-function getSummonerIdFromName() {
-    const query = `https://${regionalEndpoint}.api.riotgames.com/lol/summoner/v3/summoners/by-name/${encodeURIComponent(summonerName)}?api_key=`;
-
-    makeAjaxCall(query, "summonerId", function (response) {
-        console.log("ID received");
-        summonerId = JSON.parse(response).id;
-        getMasteryFromIds();
-    });
-}
-
-/**
- * Get the ID of a champion from the name
- * @return {string}
- */
-function getChampionIdFromName(name) {
-    // Remove spaces and special characters and capitalise
-    // name = name.replace(' ', '');//.toLowerCase());
-    const tempId = championList[name].id;
-    if (tempId) {
-        return tempId;
-    } else {
-        alert('Champion not found. Make sure you wrote the name correctly');
-    }
 }
 
 /**
@@ -93,14 +63,14 @@ function getChampionIdFromName(name) {
  * @return {string} Name validated 
  */
 function validateName(name) {
-        // Is champion
-        name = name.toLowerCase();
-        if (!name.match(' ')) {
-            name = name[0].toUpperCase() + name.slice(1, name.length);
-        } else {
-            name = toTitleCase(name);
-        }
-        return name.replace(/\W/, '');
+    // Is champion
+    name = name.toLowerCase();
+    if (!name.match(' ')) {
+        name = name[0].toUpperCase() + name.slice(1, name.length);
+    } else {
+        name = toTitleCase(name);
+    }
+    return name.replace(/\W/, '');
 }
 
 /**
@@ -109,7 +79,7 @@ function validateName(name) {
  * @return {boolean} 
  */
 function isValidSummoner(name) {
-    let regex = XRegExp("^(\\p{L}|[ _.]|\d)+$");
+    let regex = XRegExp('^(\\p{L}|[ _.]|\d)+$');
     //return name.match(/^(\p{L}|[ _.])+$/);
     return regex.test(name);
 }
@@ -145,21 +115,63 @@ function changeBackground() {
 }
 
 /**
- * Generic AJAX call
- * @param {string} query URL for request without the API key
- * @param {function} callback Function to be called on success
+ * Core function. Check if the specified summoner has unlocked a chest with the
+ * specified champion.
  */
-function makeAjaxCall(query, request, callback) {
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: callback,
-        error: function (xhr, ajaxOptions, error) {
-            console.log('Error occured: ' + xhr.responseText);
-        },
-        data: {
-            'request': request,
-            'query': query
+function checkChampionChest() {
+    regionalEndpoint = $('#region-selector').val();
+    summonerName = $('#summoner-name-textbox').val();
+    if (!isValidSummoner(summonerName)) {
+        alert('That is not a valid summoner name');
+        return;
+    }
+    championName = validateName($('#champion-name-textbox').val());
+    populateChampionList();
+}
+
+/**
+ * Retrieve a list with details of all champions. should be called once per day
+ */
+function populateChampionList() {
+    const data = { 'regionalEndpoint': regionalEndpoint };
+
+    makeAjaxCall(data, 'championList', function (response) {
+        championList = JSON.parse(response).data;
+        console.log('List populated');
+        championId = getChampionIdFromName(championName);
+
+        if (championId) {
+            getSummonerIdFromName();
+        }
+    });
+}
+
+/**
+ * Get the ID of a champion from the name
+ * @return {string}
+ */
+function getChampionIdFromName(name) {
+    const tempId = championList[name] ? championList[name].id : null;
+    if (tempId) {
+        return tempId;
+    } else {
+        alert('Champion not found. Make sure the name is correct.');
+    }
+}
+
+/**
+ * Get the ID of a summoner from the name
+ */
+function getSummonerIdFromName() {
+    const data = { 'regionalEndpoint': regionalEndpoint, 'summonerName': encodeURIComponent(summonerName) }
+
+    makeAjaxCall(data, 'summonerId', function (response) {
+        console.log('ID received');
+        summonerId = JSON.parse(response).id;
+        if (summonerId) {
+            getMasteryFromIds();
+        } else {
+            alert('Summoner not found. Make sure the name and the region are correct.');
         }
     });
 }
@@ -170,29 +182,12 @@ function makeAjaxCall(query, request, callback) {
 function getMasteryFromIds() {
     changeBackground();
 
-    const query = `https://${regionalEndpoint}.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/${summonerId}/by-champion/${championId}?api_key=`;
-    makeAjaxCall(query, "championMastery", function (response) {
-        console.log("Mastery received");
+    const data = { 'regionalEndpoint': regionalEndpoint, 'summonerId': summonerId, 'championId': championId };
+    makeAjaxCall(data, 'championMastery', function (response) {
         const result = JSON.parse(response);
+        console.log('Mastery received');
         hasChest = result.chestGranted;
         championLevel = result.championLevel;
         $('#chest-unlocked-icon').attr('src', `./img/${hasChest ? 'un' : ''}lock.svg`)
     });
-}
-
-/**
- * Core function. Check if the specified summoner has unlocked a chest with the
- * specified champion.
- */
-function checkChampionChest() {
-    let urlRequest = '';
-
-    regionalEndpoint = $('#region-selector').val();
-    summonerName = $('#summoner-name-textbox').val();
-    if (!isValidSummoner(summonerName)) {
-        alert("That is not a valid summoner name");
-        return;
-    }
-    championName = validateName($('#champion-name-textbox').val());
-    populateChampionList();
 }
