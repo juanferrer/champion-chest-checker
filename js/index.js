@@ -180,6 +180,7 @@ function getSummonerIdFromName() {
         if (cachedSummonerNames[summonerName]) {
             // Use that ID instead
             summonerId = cachedSummonerNames[summonerName];
+            getMasteryFromIds();
             return;
         }
     }
