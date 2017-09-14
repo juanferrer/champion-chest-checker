@@ -174,7 +174,7 @@ function getSummonerIdFromName() {
         cachedSummonerNames = {}
 
     // First, check if the desired summonerName is on the cache
-    cachedSummonerNamesString = window.localStorage.getItem(summonerNames);
+    cachedSummonerNamesString = window.localStorage.getItem("summonerNames");
     if (cachedSummonerNamesString) {
         cachedSummonerNames = JSON.parse(cachedSummonerNamesString);
         if (cachedSummonerNames[summonerName]) {
@@ -191,7 +191,7 @@ function getSummonerIdFromName() {
             console.log("ID received");
             summonerId = JSON.parse(response).id;
             cachedSummonerNames[summonerName] = summonerId;
-            window.localStorage.setItem(summonerNames, JSON.stringify(cachedSummonerNames));
+            window.localStorage.setItem("summonerNames", JSON.stringify(cachedSummonerNames));
             getMasteryFromIds();
         } catch (e) {
             $("#summoner-name-textbox").addClass("invalid");
