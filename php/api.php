@@ -30,7 +30,7 @@ if (isset($_REQUEST['request'])) {
 
             if ($result === FALSE) {
                 // Server must be down
-                header('HTTP/1.1 502 Bad Gateway');
+                //header('HTTP/1.1 502 Bad Gateway');
                 die('Riot Games servers are down');
             }
 
@@ -46,7 +46,7 @@ if (isset($_REQUEST['request'])) {
         $result = @file_get_contents($query);
 
         if ($result === FALSE) {
-            header('HTTP/1.1 404 Not Found');
+            //header('HTTP/1.1 404 Not Found');
             die('Summoner not found');
         }
     } elseif ($_REQUEST['request'] == 'championMastery') {
@@ -54,7 +54,7 @@ if (isset($_REQUEST['request'])) {
         $result = @file_get_contents($query);
 
         if ($result === FALSE) {
-            header('HTTP/1.1 404 Not Found');
+            //header('HTTP/1.1 404 Not Found');
             die('Champion never played');
         }
     } else {
