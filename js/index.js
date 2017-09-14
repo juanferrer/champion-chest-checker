@@ -13,7 +13,7 @@ let regionalEndpoint = "",
     summonerName = "",
     summonerId = "",
     championName = "",
-    championLvl = "",
+    championLevel = "",
     championId = "";
 let hasChest = false;
 
@@ -190,6 +190,7 @@ function getSummonerIdFromName() {
     makeAjaxCall(data, "summonerId", function (response) {
         try {
             console.log("ID received");
+            if (response === "Summoner not found") { throw "invalid"; }
             summonerId = JSON.parse(response).id;
             cachedSummonerNames[summonerName] = summonerId;
             window.localStorage.setItem("summonerNames", JSON.stringify(cachedSummonerNames));
@@ -209,10 +210,15 @@ function getMasteryFromIds() {
 
     const data = { "regionalEndpoint": regionalEndpoint, "summonerId": summonerId, "championId": championId };
     makeAjaxCall(data, "championMastery", function (response) {
-        const result = JSON.parse(response);
         console.log("Mastery received");
-        hasChest = result.chestGranted;
-        championLevel = result.championLevel;
+        if (response === "Champion never played") {
+            hasChest = false;
+            championLevel = 0;
+        } else {
+            const result = JSON.parse(response);
+            hasChest = result.chestGranted;
+            championLevel = result.championLevel;
+        }
         $("#chest-unlocked-icon").attr("src", `./img/${hasChest ? "un" : ""}lock.svg`)
     });
 }
