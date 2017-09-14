@@ -49,7 +49,7 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
 
 @media (orientation: portrait) {
   .background {
-    background-size: contain
+    background-size: auto;
   }
 }
 
