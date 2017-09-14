@@ -42,7 +42,7 @@ $.getJSON("regionalEndpoint.json", function (json) {
 
 $(".name-input").on("change", function () {
     $(this).removeClass("invalid");
-})
+});
 
 /**
  * Generic AJAX call
