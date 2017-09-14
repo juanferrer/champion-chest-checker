@@ -170,17 +170,34 @@ function getChampionIdFromName(name) {
  * Get the ID of a summoner from the name
  */
 function getSummonerIdFromName() {
+    let cachedSummonerNamesString = "",
+        cachedSummonerNames = {}
+
+    // First, check if the desired summonerName is on the cache
+    cachedSummonerNamesString = window.localStorage.summonerNames || "";
+    if (cachedSummonerNamesString) {
+        cachedSummonerNames = JSON.parse(cachedSummonerNamesString);
+        if (cachedSummonerNames[summonerName]) {
+            // Use that ID instead
+            summonerId = cachedSummonerNames[summonerName];
+            return;
+        }
+    }
+    // Get the ID from the name and cache it
     const data = { "regionalEndpoint": regionalEndpoint, "summonerName": encodeURIComponent(summonerName) }
 
     makeAjaxCall(data, "summonerId", function (response) {
-        console.log("ID received");
         try {
+            console.log("ID received");
             summonerId = JSON.parse(response).id;
+            cachedSummonerNames[summonerName] = summonerId;
+            window.localStorage.summonerNames = JSON.stringify(cachedSummonerNames);
             getMasteryFromIds();
         } catch (e) {
             $("#summoner-name-textbox").addClass("invalid");
         }
     });
+
 }
 
 /**
