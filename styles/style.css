@@ -55,7 +55,7 @@ https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image
 
 @media (orientation: landscape) {
   .background {
-    background-size: auto 100%;
+    background-size: auto;
   }
 }
 
