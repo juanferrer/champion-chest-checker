@@ -126,6 +126,7 @@ function changeBackground() {
  * specified champion.
  */
 function checkChampionChest() {
+    $("#progress")[0].style.opacity = 1;
     regionalEndpoint = $("#region-selector").val();
     summonerName = $("#summoner-name-textbox").val();
     if (!isValidSummoner(summonerName)) {
@@ -133,20 +134,39 @@ function checkChampionChest() {
         return;
     }
     championName = validateName($("#champion-name-textbox").val());
+    setProgress(10);
     populateChampionList();
+}
+
+/**
+ * Set the value of the progress bar
+ * @param {number} value 
+ */
+function setProgress(value) {
+    $("#progress").css("width", `${value}%`);
+    if (value === 100) {
+        setTimeout(function () {
+            $("#progress")[0].style.opacity = 0;
+            setTimeout(function () {
+                setProgress(0);
+            }, 1000);
+        }, 1000);
+    }
 }
 
 /**
  * Retrieve a list with details of all champions. should be called once per day
  */
 function populateChampionList() {
+    setProgress(15);
     const data = { "regionalEndpoint": regionalEndpoint };
 
     makeAjaxCall(data, "championList", function (response) {
+        setProgress(25);
         championList = JSON.parse(response).data;
         console.log("List populated");
         championId = getChampionIdFromName(championName);
-
+        setProgress(40);
         if (championId) {
             getSummonerIdFromName();
         }
@@ -175,6 +195,7 @@ function getSummonerIdFromName() {
 
     // First, check if the desired summonerName is on the cache
     cachedSummonerNamesString = window.localStorage.getItem("summonerNames");
+    setProgress(45);
     if (cachedSummonerNamesString) {
         cachedSummonerNames = JSON.parse(cachedSummonerNamesString);
         if (cachedSummonerNames[summonerName]) {
@@ -187,6 +208,7 @@ function getSummonerIdFromName() {
     // Get the ID from the name and cache it
     const data = { "regionalEndpoint": regionalEndpoint, "summonerName": encodeURIComponent(summonerName) }
 
+    setProgress(50);
     makeAjaxCall(data, "summonerId", function (response) {
         try {
             console.log("ID received");
@@ -194,6 +216,7 @@ function getSummonerIdFromName() {
             summonerId = JSON.parse(response).id;
             cachedSummonerNames[summonerName] = summonerId;
             window.localStorage.setItem("summonerNames", JSON.stringify(cachedSummonerNames));
+            setProgress(60);
             getMasteryFromIds();
         } catch (e) {
             $("#summoner-name-textbox").addClass("invalid");
@@ -207,9 +230,10 @@ function getSummonerIdFromName() {
  */
 function getMasteryFromIds() {
     changeBackground();
-
+    setProgress(70);
     const data = { "regionalEndpoint": regionalEndpoint, "summonerId": summonerId, "championId": championId };
     makeAjaxCall(data, "championMastery", function (response) {
+        setProgress(85);
         console.log("Mastery received");
         if (response === "Champion never played") {
             hasChest = false;
@@ -220,5 +244,6 @@ function getMasteryFromIds() {
             championLevel = result.championLevel;
         }
         $("#chest-unlocked-icon").attr("src", `./img/${hasChest ? "un" : ""}lock.svg`)
+        setProgress(100);
     });
 }
