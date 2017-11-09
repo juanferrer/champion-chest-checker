@@ -1,6 +1,6 @@
 # Champion Chest Checker
 
-It tells you whether or not you have a chest with the specified champion. Live from juanferrer.github.io/champion-chest-checker
+League of Legends web app. Find out whether or not you have a chest with the specified champion. View [here](https://juanferrer.github.io/champion-chest-checker)
 
 Steps taken to acomplish:
 
