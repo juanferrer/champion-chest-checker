@@ -26,7 +26,7 @@ if (isset($_REQUEST['request'])) {
         } else {
             // But if we don't (or it's old), request it again
             $query = 'https://'. $data->regionalEndpoint .'.api.riotgames.com/lol/static-data/v3/champions?api_key=' . $apiKey;
-            $result = @file_get_contents($query);  
+            $result = @file_get_contents($query);
 
             if ($result === FALSE) {
                 // Server must be down
@@ -60,12 +60,12 @@ if (isset($_REQUEST['request'])) {
     } else {
         // Invalid request type
         header('HTTP/1.1 404 Not Found');
-        die(json_encode(array('message' => 'Invalid request')));
+        die(json_encode(array('message' => 'No request found')));
     }
     echo $result;
 } else {
     header('HTTP/1.1 400 Bad Request');
-    die(json_encode(array('message' => 'No request found')));
+    die(json_encode(array('message' => 'Invalid request')));
 }
 
 ?>
