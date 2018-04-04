@@ -2,41 +2,55 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name=viewport content="width=450">
-    <title>Champion Chest Check</title>
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="shortcut icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <meta name="theme-color" content="#ffffff">
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116931443-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-116931443-1');
+	</script>
+
+	<meta charset="UTF-8">
+	<meta name=viewport content="width=450">
+	<title>Champion Chest Check</title>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<link rel="shortcut icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+	<link rel="shortcut icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+	<meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
-    <div id="progress"></div>
-    <div id="background-0" class="background"></div>
-    <div id="background-1" class="background"></div>
-    <div id="container">
-        <div id="form-container">
-            <!-- <label for="summoner-name-textbox">Summoner</label> -->
-            <input type="text" id="summoner-name-textbox" class="name-input" placeholder="Summoner name" autocorrect=off autocapitalize=words autofocus/><br>
-            <!-- <label for="champion-name-textbox">Champion</label> -->
-            <input type="text" id="champion-name-textbox" class="name-input" placeholder="Champion name" autocorrect=off autocapitalize=words/><br>
-            <div id="bottom-row">
-                <!-- <label for="region-selector">Region</label> -->
-                <select id="region-selector">
-                    <option disabled selected>Region</option>
-                </select><br/>
-                <button id="check-button">Check</button>
-            </div>
-        </div>
-        <div id="chest-unlocked-icon-container">
-            <img id="chest-unlocked-icon" alt="Chest status" src="./img/lock.svg">
-        </div>
-    </div>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
-    <script src="https://unpkg.com/xregexp/xregexp-all.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+	<div id="progress"></div>
+	<div id="background-0" class="background"></div>
+	<div id="background-1" class="background"></div>
+	<div id="container">
+		<div id="form-container">
+			<!-- <label for="summoner-name-textbox">Summoner</label> -->
+			<input type="text" id="summoner-name-textbox" class="name-input" placeholder="Summoner name" autocorrect=off autocapitalize=words
+			 autofocus/>
+			<br>
+			<!-- <label for="champion-name-textbox">Champion</label> -->
+			<input type="text" id="champion-name-textbox" class="name-input" placeholder="Champion name" autocorrect=off autocapitalize=words/>
+			<br>
+			<div id="bottom-row">
+				<!-- <label for="region-selector">Region</label> -->
+				<select id="region-selector">
+					<option disabled selected>Region</option>
+				</select>
+				<br/>
+				<button id="check-button">Check</button>
+			</div>
+		</div>
+		<div id="chest-unlocked-icon-container">
+			<img id="chest-unlocked-icon" alt="Chest status" src="./img/lock.svg">
+		</div>
+	</div>
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+	<script src="https://unpkg.com/xregexp/xregexp-all.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 </body>
 
 </html>
