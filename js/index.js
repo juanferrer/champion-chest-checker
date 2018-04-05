@@ -12,7 +12,9 @@ let regionalEndpoint = "",
 	summonerName = "",
 	summonerId = "",
 	championName = "",
+	// eslint-disable-next-line no-unused-vars
 	championLevel = "",
+	championSkinsAmount = 0,
 	championId = "";
 let hasChest = false;
 
@@ -107,11 +109,20 @@ function toTitleCase(str) {
 }
 
 /**
+ * Return a random integet between min (inclusive) and max (inclusive)
+ * @param {number} min Lower bound in the form of an int
+ * @param {number} max Upper bound in the form of an int
+ */
+function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
  * Change the image from the bottom buffer, change opacity from the top buffer and swap buffers
  */
 function changeBackground() {
 	document.getElementById(`background-${currentBottomBuffer}`).style.backgroundImage
-		= `url("https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1) ? "loading" : "splash"}/${championName}_0.jpg")`;
+		= `url("https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1) ? "loading" : "splash"}/${championName}_${getRandomInt(0, championSkinsAmount - 1)}.jpg")`;
 
 	// Make the top buffer transition to invisible
 	document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
@@ -173,6 +184,7 @@ function populateChampionList() {
 		championList = JSON.parse(response).data;
 		log("List populated");
 		championId = getChampionIdFromName(championName);
+		championSkinsAmount = getSkinsAmountFromName(championName);
 		setProgress(40);
 		if (championId) {
 			getSummonerIdFromName();
@@ -182,15 +194,26 @@ function populateChampionList() {
 
 /**
  * Get the ID of a champion from the name
- * @return {string}
+ * @param {string} name
  */
 function getChampionIdFromName(name) {
+	/*for (let champion in championList) {
+		if (championList[champion]) tempId = championList[champion]
+	}*/
 	const tempId = championList[name] ? championList[name].id : null;
 	if (tempId) {
 		return tempId;
 	} else {
 		$("#champion-name-textbox").addClass("invalid");
 	}
+}
+
+/**
+ * Get the amount of skins of a champion from the name
+ * @param {string} name
+ */
+function getSkinsAmountFromName(name) {
+	return championList[name] ? championList[name].skins.length : 2;
 }
 
 /**

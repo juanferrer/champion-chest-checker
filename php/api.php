@@ -1,11 +1,12 @@
 <?php
 
-function isCurrentFile($file) {
+function isCurrentFile($file)
+{
     if (!file_exists($file)) {
-        return FALSE;
+        return false;
     }
     $filedate = date('Ymd', filemtime($file));
-    $todaydate  = date('Ymd');
+    $todaydate = date('Ymd');
     return $filedate == $todaydate;
 }
 
@@ -25,35 +26,32 @@ if (isset($_REQUEST['request'])) {
             $result = file_get_contents('./championList.json');
         } else {
             // But if we don't (or it's old), request it again
-            $query = 'https://'. $data->regionalEndpoint .'.api.riotgames.com/lol/static-data/v3/champions?api_key=' . $apiKey;
+            $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/static-data/v3/champions?champListData=skins&api_key=' . $apiKey;
             $result = @file_get_contents($query);
 
-            if ($result === FALSE) {
+            if ($result === false) {
                 // Server must be down
                 //header('HTTP/1.1 502 Bad Gateway');
                 die('Riot Games servers are down');
             }
 
             // Now, cache it. We'll use this for next request
-            if (!file_exists('./championList.json')) {
-                unlink('.championList.json');
-            }
             file_put_contents('./championList.json', $result);
         }
 
     } elseif ($_REQUEST['request'] == 'summonerId') {
-        $query = 'https://'. $data->regionalEndpoint . '.api.riotgames.com/lol/summoner/v3/summoners/by-name/'. $data->summonerName .'?api_key=' . $apiKey;
+        $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $data->summonerName . '?api_key=' . $apiKey;
         $result = @file_get_contents($query);
 
-        if ($result === FALSE) {
+        if ($result === false) {
             //header('HTTP/1.1 404 Not Found');
             die('Summoner not found');
         }
     } elseif ($_REQUEST['request'] == 'championMastery') {
-        $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/'. $data->summonerId . '/by-champion/'. $data->championId .'?api_key=' . $apiKey;
+        $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/' . $data->summonerId . '/by-champion/' . $data->championId . '?api_key=' . $apiKey;
         $result = @file_get_contents($query);
 
-        if ($result === FALSE) {
+        if ($result === false) {
             //header('HTTP/1.1 404 Not Found');
             die('Champion never played');
         }
@@ -67,5 +65,3 @@ if (isset($_REQUEST['request'])) {
     header('HTTP/1.1 400 Bad Request');
     die(json_encode(array('message' => 'Invalid request')));
 }
-
-?>
