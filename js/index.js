@@ -80,7 +80,8 @@ function makeAjaxCall(dataJSON, request, callback) {
 function validateName(name) {
 	// Is champion
 	name = name.toLowerCase();
-	if (!name.match(" ")) {
+	if (name === "Wukong") return "MonkeyKing";
+	else if (!name.match(" ")) {
 		name = name[0].toUpperCase() + name.slice(1, name.length);
 	} else {
 		name = toTitleCase(name);
@@ -197,9 +198,6 @@ function populateChampionList() {
  * @param {string} name
  */
 function getChampionIdFromName(name) {
-	/*for (let champion in championList) {
-		if (championList[champion]) tempId = championList[champion]
-	}*/
 	const tempId = championList[name] ? championList[name].id : null;
 	if (tempId) {
 		return tempId;
