@@ -198,7 +198,7 @@ function populateChampionList() {
  * @param {string} name
  */
 function getChampionIdFromName(name) {
-	const tempId = championList[name] ? championList[name].id : null;
+	const tempId = championList[name] ? championList[name].key : null;
 	if (tempId) {
 		return tempId;
 	} else {

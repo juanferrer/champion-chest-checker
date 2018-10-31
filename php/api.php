@@ -10,7 +10,7 @@ function isCurrentFile($file)
     return $filedate == $todaydate;
 }
 
-$apiKey = 'RGAPI-KEY';
+$apiKey = 'RGAPI';
 
 header('Access-Control-Allow-Origin: *');
 
@@ -26,13 +26,24 @@ if (isset($_REQUEST['request'])) {
             $result = file_get_contents('./championList.json');
         } else {
             // But if we don't (or it's old), request it again
-            $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/static-data/v3/champions?champListData=skins&api_key=' . $apiKey;
+            $query = 'https://ddragon.leagueoflegends.com/realms/' . $data->regionalEndpoint . 'json';
+            $result = @file_get_contents($query);
+            if ($result === false) {
+                // Unable to get live patch version on your region. Using EUW instead
+                $query = 'https://ddragon.leagueoflegends.com/realms/euw.json';
+                $result = @file_get_contents($query);
+            }
+
+            $decodedJson = json_decode($result, true);
+            $version = $decodedJson["n"]["champion"];
+
+            $query = 'https://ddragon.leagueoflegends.com/cdn/' . $version . '/data/en_US/champion.json';
             $result = @file_get_contents($query);
 
             if ($result === false) {
                 // Server must be down
                 //header('HTTP/1.1 502 Bad Gateway');
-                die('Riot Games servers are down');
+                die('Unable to get static data');
             }
 
             // Now, cache it. We'll use this for next request
