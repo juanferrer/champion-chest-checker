@@ -125,7 +125,7 @@ function getRandomInt(min, max) {
  */
 function changeBackground() {
 	document.getElementById(`background-${currentBottomBuffer}`).style.backgroundImage
-		= `url("https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1) ? "loading" : "splash"}/${championName}_${getRandomInt(0, championSkinsAmount - 1)}.jpg")`;
+		= `url("https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1) ? "loading" : "splash"}/${championName}_${/*getRandomInt(0, championSkinsAmount - 1)*/0}.jpg")`;
 
 	// Make the top buffer transition to invisible
 	document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
@@ -181,18 +181,25 @@ function setProgress(value) {
 function populateChampionList() {
 	setProgress(15);
 	const data = {};
-	const staticDataURL = `https://ddragon.leagueoflegends.com/realms/${regionalEndpoint}.json`;
+	const versionURL = `https://ddragon.leagueoflegends.com/realms/${regionalEndpoint.replace(/\d+?/g, "")}.json`;
 
-	makeAjaxCall(staticDataURL, data, "championList", function (response) {
+	makeAjaxCall(versionURL, data, undefined, function (response) {
 		setProgress(25);
-		championList = JSON.parse(response).data;
-		log("List populated");
-		championId = getChampionIdFromName(championName);
-		championSkinsAmount = getSkinsAmountFromName(championName);
-		setProgress(40);
-		if (championId) {
-			getSummonerIdFromName();
-		}
+		const version = response.n.champion;
+
+		const championURL = `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/championFull.json`;
+
+		makeAjaxCall(championURL, data, "championList", function (response) {
+			setProgress(30);
+			championList = response.data;
+			log("List populated");
+			championId = getChampionIdFromName(championName);
+			championSkinsAmount = getSkinsAmountFromName(championName);
+			setProgress(40);
+			if (championId) {
+				getSummonerIdFromName();
+			}
+		});
 	});
 }
 
