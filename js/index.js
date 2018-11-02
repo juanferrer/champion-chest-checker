@@ -24,7 +24,7 @@ let currentBottomBuffer = 0;
 /** Time allowed between conversions */
 const timeout = 5000;
 
-const url = "https://diabolic-straps.000webhostapp.com/api.php";
+const serverURL = "https://diabolic-straps.000webhostapp.com/api.php";
 
 /** List of ChampionDto */
 let championList = [];
@@ -54,10 +54,12 @@ function log(toLog) {
 
 /**
  * Generic AJAX call
- * @param {string} query URL for request without the API key
+ * @param {string} url URL to make the call to
+ * @param {Object} dataJSON Object with necessary data in JSON format
+ * @param {string} request Request type
  * @param {function} callback Function to be called on success
  */
-function makeAjaxCall(dataJSON, request, callback) {
+function makeAjaxCall(url, dataJSON, request, callback) {
 	$.ajax({
 		url: url,
 		type: "GET",
@@ -178,9 +180,10 @@ function setProgress(value) {
  */
 function populateChampionList() {
 	setProgress(15);
-	const data = { "regionalEndpoint": regionalEndpoint };
+	const data = {};
+	const staticDataURL = `https://ddragon.leagueoflegends.com/realms/${regionalEndpoint}.json`;
 
-	makeAjaxCall(data, "championList", function (response) {
+	makeAjaxCall(staticDataURL, data, "championList", function (response) {
 		setProgress(25);
 		championList = JSON.parse(response).data;
 		log("List populated");
@@ -237,7 +240,7 @@ function getSummonerIdFromName() {
 	const data = { "regionalEndpoint": regionalEndpoint, "summonerName": encodeURIComponent(summonerName) };
 
 	setProgress(50);
-	makeAjaxCall(data, "summonerId", function (response) {
+	makeAjaxCall(serverURL, data, "summonerId", function (response) {
 		try {
 			log("ID received");
 			if (response === "Summoner not found") { throw "invalid"; }
@@ -260,7 +263,7 @@ function getMasteryFromIds() {
 	changeBackground();
 	setProgress(70);
 	const data = { "regionalEndpoint": regionalEndpoint, "summonerId": summonerId, "championId": championId };
-	makeAjaxCall(data, "championMastery", function (response) {
+	makeAjaxCall(serverURL, data, "championMastery", function (response) {
 		setProgress(85);
 		log("Mastery received");
 		if (response === "Champion never played") {
