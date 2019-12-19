@@ -51,7 +51,7 @@ if (isset($_REQUEST['request'])) {
         }
 
     } elseif ($_REQUEST['request'] == 'summonerId') {
-        $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/summoner/v3/summoners/by-name/' . $data->summonerName . '?api_key=' . $apiKey;
+        $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/summoner/v4/summoners/by-name/' . $data->summonerName . '?api_key=' . $apiKey;
         $result = @file_get_contents($query);
 
         if ($result === false) {
@@ -59,7 +59,7 @@ if (isset($_REQUEST['request'])) {
             die('Summoner not found');
         }
     } elseif ($_REQUEST['request'] == 'championMastery') {
-        $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/' . $data->summonerId . '/by-champion/' . $data->championId . '?api_key=' . $apiKey;
+        $query = 'https://' . $data->regionalEndpoint . '.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/' . $data->summonerId . '/by-champion/' . $data->championId . '?api_key=' . $apiKey;
         $result = @file_get_contents($query);
 
         if ($result === false) {
