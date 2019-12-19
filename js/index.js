@@ -115,9 +115,13 @@ function toTitleCase(str) {
  * Return a random integet between min (inclusive) and max (inclusive)
  * @param {number} min Lower bound in the form of an int
  * @param {number} max Upper bound in the form of an int
+ * I think this returns a uniform distribution (or it at least feels
+ * random enough when the range is small)
  */
 function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    let normalisedMin = Math.ceil(min);
+    let normalisedMax = Math.floor(max);
+    return Math.floor(Math.random() * (normalisedMax - normalisedMin + 1)) + normalisedMin;
 }
 
 /**
@@ -125,7 +129,7 @@ function getRandomInt(min, max) {
  */
 function changeBackground() {
     document.getElementById(`background-${currentBottomBuffer}`).style.backgroundImage
-		= `url("https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1) ? "loading" : "splash"}/${championName}_${/*getRandomInt(0, championSkinsAmount - 1)*/0}.jpg")`;
+		= `url("https://ddragon.leagueoflegends.com/cdn/img/champion/${(window.screen.availWidth / window.screen.availHeight < 1) ? "loading" : "splash"}/${championName}_${getRandomInt(0, championSkinsAmount - 1)}.jpg")`;
 
     // Make the top buffer transition to invisible
     document.getElementById(`background-${(currentBottomBuffer + 1) % 2}`).style.opacity = 0;
